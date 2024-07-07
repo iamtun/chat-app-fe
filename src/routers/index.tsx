@@ -1,6 +1,7 @@
 ﻿import {createBrowserRouter} from 'react-router-dom';
 import ProtectedRoute from './protected';
 import {RootPage} from './app';
+import AuthProvider from '../providers/auth';
 
 const createRouter = () => {
   return createBrowserRouter([
@@ -15,7 +16,13 @@ const createRouter = () => {
       path: '/auth/login',
       lazy: async () => {
         const {LoginPage} = await import('./auth/login');
-        return {Component: LoginPage};
+        return {
+          element: (
+            <AuthProvider>
+              <LoginPage />
+            </AuthProvider>
+          ),
+        };
       },
     },
     {

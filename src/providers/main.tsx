@@ -1,4 +1,4 @@
-﻿import {Spin} from 'antd';
+﻿import {ConfigProvider, Spin} from 'antd';
 import React from 'react';
 import {ErrorBoundary} from 'react-error-boundary';
 
@@ -25,7 +25,15 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
           </>
         )}
       >
-        {children}
+        <ConfigProvider
+          theme={{
+            token: {
+              fontFamily: 'Nunito',
+            },
+          }}
+        >
+          {children}
+        </ConfigProvider>
       </ErrorBoundary>
     </React.Suspense>
   );

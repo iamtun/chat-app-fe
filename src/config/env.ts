@@ -1,6 +1,5 @@
 ﻿import * as z from 'zod';
 
-console.log(import.meta.env);
 const createEnv = () => {
   const EnvSchema = z.object({
     API_URL: z.string(),
