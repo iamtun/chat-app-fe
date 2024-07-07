@@ -5,6 +5,8 @@ import {firebaseAuth} from '../libs/firebase';
 import {IAuth} from '../models/auth';
 import {AuthContext} from '../contexts/auth';
 import firebaseService from '../services/firebase';
+import {CONSTANT} from '../common/constant';
+import userService from '../services/user';
 
 const AuthProvider = ({children}: {children: React.ReactNode}) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -29,6 +31,7 @@ const AuthProvider = ({children}: {children: React.ReactNode}) => {
       .logOut()
       .then(() => {
         setCurrentUser(null);
+        localStorage.removeItem(CONSTANT.TOKEN);
         navigate('/');
       })
       .catch(() => {})
@@ -48,8 +51,15 @@ const AuthProvider = ({children}: {children: React.ReactNode}) => {
     const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
       if (user) {
         user.getIdToken().then((token) => {
-          localStorage.setItem('_tk', token);
+          localStorage.setItem(CONSTANT.TOKEN, token);
         });
+
+        userService
+          .getUserInfo()
+          .then((data) => {
+            console.log(data);
+          })
+          .catch(() => {});
       }
       setCurrentUser(user);
     });
